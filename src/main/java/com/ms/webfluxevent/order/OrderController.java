@@ -14,7 +14,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public Mono<Order> orderProduct(@RequestBody Order order) {
+    public Mono<Boolean> orderProduct(@RequestBody Order order) {
         return this.orderService.orderProduct(order);
     }
 

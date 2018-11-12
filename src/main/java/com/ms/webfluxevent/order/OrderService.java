@@ -1,6 +1,5 @@
 package com.ms.webfluxevent.order;
 
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -8,10 +7,10 @@ import reactor.core.publisher.Mono;
 @Service
 public class OrderService {
 
-    private final ReactiveRedisTemplate redisTemplate;
+    private final OrderRepository orderRepository;
 
-    public OrderService(ReactiveRedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     /* TODO
@@ -20,8 +19,8 @@ public class OrderService {
      * 3. 이벤트 중 이미 구매한 이력이 있는지 확인한다.
      * 4. 저장한다.
      * */
-    public Mono<Order> orderProduct(Order order) {
-        return null;
+    public Mono<Boolean> orderProduct(Order order) {
+        return this.orderRepository.save(order);
     }
 
     public Flux<Order> findAll() {
@@ -29,7 +28,7 @@ public class OrderService {
     }
 
     public Mono<Order> findById(String id) {
-        return null;
+        return this.orderRepository.findById(id);
     }
 
     public Mono<Void> deleteById(String id) {

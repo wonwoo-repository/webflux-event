@@ -23,6 +23,14 @@ public class Order {
         initializeOrderTime();
     }
 
+    public Order(String id, Long productId, Integer productCount, Long userId) {
+        this.id = id;
+        this.productId = productId;
+        this.productCount = productCount;
+        this.userId = userId;
+        initializeOrderTime();
+    }
+
     public void initializeOrderTime() {
         this.orderTime = LocalDateTime.now();
     }
