@@ -12,11 +12,12 @@ import java.util.UUID;
 
 @Repository
 public class OrderRepository {
+
     private final ReactiveRedisTemplate<String, Order> redisTemplate;
 
     private final ObjectMapper objectMapper;
 
-    public OrderRepository(ReactiveRedisTemplate redisTemplate, ObjectMapper objectMapper) {
+    public OrderRepository(ReactiveRedisTemplate<String, Order> redisTemplate, ObjectMapper objectMapper) {
         this.redisTemplate = redisTemplate;
         this.objectMapper = objectMapper;
     }
@@ -24,7 +25,7 @@ public class OrderRepository {
     public Mono<Boolean> save(Order order) {
         String id = UUID.randomUUID().toString();
         return this.redisTemplate.opsForHash()
-                .putAll(order.getId(), toMap(order));
+            .put("orders", order.getId(), order);
     }
 
     public Flux<Order> findAll() {
@@ -32,10 +33,8 @@ public class OrderRepository {
     }
 
     public Mono<Order> findById(String id) {
-        /*return this.redisTemplate.opsForHash()
-                .entries(id)
-                .then(entries -> entries.)*/
-        return null;
+        return this.redisTemplate.<String, Order>opsForHash()
+            .get("orders", id);
     }
 
     public Mono<Void> deleteById(String id) {
